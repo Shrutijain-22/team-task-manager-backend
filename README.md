@@ -4,18 +4,7 @@ A RESTful API server for the Team Task Manager application. Built with Node.js, 
 
 ---
 
-## Table of Contents
-
-- [Project Overview](#project-overview)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [API Endpoints](#api-endpoints)
-- [Deployment](#deployment)
-
----
-
-## Project Overview
+## Overview
 
 This backend powers the Team Task Manager platform. It implements a project-centric security model where permissions are determined by project ownership rather than global user roles. Any authenticated user can create a project, and the project creator controls team membership and task assignment.
 
@@ -23,6 +12,18 @@ Key architectural decisions:
 - JWT-based stateless authentication
 - Project-level access control middleware (`checkProjectAdmin`, `checkProjectMember`)
 - Task status updates restricted strictly to the assigned user
+
+---
+
+## Features
+
+- User registration and login with hashed passwords and JWT tokens
+- Any authenticated user can create a project and become its owner
+- Project owners can add and remove team members dynamically
+- Task creation and assignment restricted to project owners
+- Task status updates restricted to the assigned team member only
+- Dashboard analytics split into personal stats and project admin stats
+- Filtering support on tasks by status, assignee, project, and overdue flag
 
 ---
 
@@ -39,7 +40,7 @@ Key architectural decisions:
 
 ---
 
-## Getting Started
+## Setup
 
 ### Prerequisites
 
@@ -49,13 +50,26 @@ Key architectural decisions:
 ### Installation
 
 ```bash
-# Clone the repository
 git clone <your-backend-repo-url>
 cd team-task-manager-backend
-
-# Install dependencies
 npm install
 ```
+
+### Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
+
+| Variable     | Description                                    |
+|--------------|------------------------------------------------|
+| `PORT`       | Port the server listens on                     |
+| `MONGO_URI`  | MongoDB connection string (Atlas or local)     |
+| `JWT_SECRET` | Secret key used to sign and verify JWT tokens  |
 
 ### Running Locally
 
@@ -67,25 +81,7 @@ npm run dev
 npm start
 ```
 
-The server will start on the port defined in your `.env` file (default: `5000`).
-
----
-
-## Environment Variables
-
-Create a `.env` file in the root of the backend directory with the following variables:
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_key
-```
-
-| Variable    | Description                                   |
-|-------------|-----------------------------------------------|
-| `PORT`      | Port the server listens on                    |
-| `MONGO_URI` | MongoDB connection string (Atlas or local)    |
-| `JWT_SECRET`| Secret key used to sign and verify JWT tokens |
+The server starts on the port defined in `.env` (default: `5000`).
 
 ---
 
@@ -102,30 +98,30 @@ All protected routes require the `Authorization: Bearer <token>` header.
 
 ### Users
 
-| Method | Endpoint     | Access    | Description       |
-|--------|--------------|-----------|-------------------|
-| GET    | `/api/users` | Protected | Get all users     |
+| Method | Endpoint     | Access    | Description   |
+|--------|--------------|-----------|---------------|
+| GET    | `/api/users` | Protected | Get all users |
 
 ### Projects
 
-| Method | Endpoint                          | Access           | Description                        |
-|--------|-----------------------------------|------------------|------------------------------------|
-| GET    | `/api/projects`                   | Protected        | Get all projects for current user  |
-| POST   | `/api/projects`                   | Protected        | Create a new project               |
-| PUT    | `/api/projects/:id`               | Project Creator  | Update project details             |
-| DELETE | `/api/projects/:id`               | Project Creator  | Delete a project                   |
-| PUT    | `/api/projects/:id/add-member`    | Project Creator  | Add a user to the project team     |
-| PUT    | `/api/projects/:id/remove-member` | Project Creator  | Remove a user from the project team|
+| Method | Endpoint                          | Access          | Description                         |
+|--------|-----------------------------------|-----------------|-------------------------------------|
+| GET    | `/api/projects`                   | Protected       | Get all projects for current user   |
+| POST   | `/api/projects`                   | Protected       | Create a new project                |
+| PUT    | `/api/projects/:id`               | Project Creator | Update project details              |
+| DELETE | `/api/projects/:id`               | Project Creator | Delete a project                    |
+| PUT    | `/api/projects/:id/add-member`    | Project Creator | Add a user to the project team      |
+| PUT    | `/api/projects/:id/remove-member` | Project Creator | Remove a user from the project team |
 
 ### Tasks
 
-| Method | Endpoint        | Access           | Description                              |
-|--------|-----------------|------------------|------------------------------------------|
-| GET    | `/api/tasks`    | Protected        | Get tasks (assigned to me or my projects)|
-| POST   | `/api/tasks`    | Project Creator  | Create a task within an owned project    |
-| GET    | `/api/tasks/:id`| Assigned / Creator | Get a single task                      |
-| PUT    | `/api/tasks/:id`| Assigned User Only | Update task status                     |
-| DELETE | `/api/tasks/:id`| Project Creator  | Delete a task                            |
+| Method | Endpoint         | Access             | Description                               |
+|--------|------------------|--------------------|-------------------------------------------|
+| GET    | `/api/tasks`     | Protected          | Get tasks assigned to me or my projects   |
+| POST   | `/api/tasks`     | Project Creator    | Create a task within an owned project     |
+| GET    | `/api/tasks/:id` | Assigned / Creator | Get a single task                         |
+| PUT    | `/api/tasks/:id` | Assigned User Only | Update task status                        |
+| DELETE | `/api/tasks/:id` | Project Creator    | Delete a task                             |
 
 **Query parameters for GET /api/tasks:**
 - `project` - Filter by project ID
@@ -164,11 +160,12 @@ All protected routes require the `Authorization: Bearer <token>` header.
 
 ---
 
-## Deployment
+## Live Links
 
-The backend is deployed on **Railway**.
-
-**Live API Base URL:** `https://team-task-manager-backend-production-2da3.up.railway.app`
+| Resource        | URL                                                                        |
+|-----------------|----------------------------------------------------------------------------|
+| Live API        | https://team-task-manager-backend-production-2da3.up.railway.app           |
+| Frontend App    | https://your-frontend-url.up.railway.app                                   |
 
 ### Deployment Notes
 
