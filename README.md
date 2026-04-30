@@ -23,7 +23,6 @@ Key architectural decisions:
 - Task creation and assignment restricted to project owners
 - Task status updates restricted to the assigned team member only
 - Dashboard analytics split into personal stats and project admin stats
-- Filtering support on tasks by status, assignee, project, and overdue flag
 
 ---
 
