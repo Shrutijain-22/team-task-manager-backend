@@ -134,40 +134,11 @@ All protected routes require the `Authorization: Bearer <token>` header.
 |--------|------------------|-----------|-----------------------------------------------------|
 | GET    | `/api/dashboard` | Protected | Get personal task stats and project admin analytics |
 
-**Response shape:**
-```json
-{
-  "myStats": {
-    "totalTasks": 5,
-    "completedTasks": 2,
-    "pendingTasks": 3,
-    "overdueTasks": 1,
-    "tasksByStatus": { "todo": 1, "inProgress": 1, "inReview": 1, "done": 2 }
-  },
-  "adminStats": {
-    "totalProjects": 2,
-    "totalTasks": 10,
-    "completedTasks": 4,
-    "pendingTasks": 6,
-    "overdueTasks": 2,
-    "tasksByStatus": { "todo": 2, "inProgress": 2, "inReview": 2, "done": 4 },
-    "tasksPerUser": [{ "name": "John", "email": "john@example.com", "count": 5 }]
-  }
-}
-```
-> `adminStats` is `null` if the user does not own any projects.
-
----
 
 ## Live Links
 
 | Resource        | URL                                                                        |
 |-----------------|----------------------------------------------------------------------------|
 | Live API        | https://team-task-manager-backend-production-2da3.up.railway.app           |
-| Frontend App    | https://your-frontend-url.up.railway.app                                   |
+| Frontend App    | https://team-task-manager-frontend-production.up.railway.app               |
 
-### Deployment Notes
-
-- Set all environment variables (`MONGO_URI`, `JWT_SECRET`, `PORT`) in the Railway service settings.
-- Railway automatically runs `npm start` to launch the server.
-- Ensure your MongoDB Atlas cluster allows connections from Railway's IP range (or use `0.0.0.0/0` for open access during development).
